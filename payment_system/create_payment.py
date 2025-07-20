@@ -4,13 +4,13 @@ from loguru import logger
 
 import aiohttp
 
-from payment_system.build_data import build_payment_data
+from payment_system.build_data import build_payment_data, VatType
 from payment_system.check_and_confirm import check_and_confirm_payment
 from payment_system.utils import generate_token, make_tinkoff_request
 
 
-async def create_payment(title: str, price: float, order_number: str):
-    data = build_payment_data(title, price, order_number)
+async def create_payment(title: str, description: str, price: float, order_number: str, vat: VatType):
+    data = build_payment_data(title, description, price, order_number, vat)
     data["Token"] = generate_token(data)
 
     async with aiohttp.ClientSession() as http_session:
@@ -22,13 +22,17 @@ async def create_payment(title: str, price: float, order_number: str):
                     f"ссылка: {payment_url}")
 
         asyncio.create_task(check_and_confirm_payment(response_data['PaymentId']))
+        return payment_url
 
     else:
         logger.error(f"Ошибка создания платежа: {response_data}, статус={status_code}")
 
 
 async def main():
-    await create_payment(title="Заголовок платежа", price=100, order_number="12345")
+    data = await create_payment(title="Заголовок платежа", description="Описание платежа", price=100.0, order_number="1244",
+    vat=VatType.NONE)
+    print("Платеж создан")
+    print(data)
 
 
 if __name__ == "__main__":
