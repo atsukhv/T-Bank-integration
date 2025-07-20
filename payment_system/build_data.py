@@ -9,12 +9,12 @@ class VatType(Enum):
     VAT0 = "vat0" # — НДС по ставке 0%
     VAT5 = "vat5" # — НДС по ставке 5%
     VAT7 = "vat7" # — НДС по ставке 7%
-    VAT10 = "vat10" # — НДС чека по ставке 10%
-    VAT20 = "vat20" # — НДС чека по ставке 20%
-    VAT105 = "vat105" # — НДС чека по расчетной ставке 5/105
-    VAT107 = "vat107" # — НДС чека по расчетной ставке 7/107
-    VAT110 = "vat110" # — НДС чека по расчетной ставке 10/110
-    VAT120 = "vat120" # — НДС чека по расчетной ставке 20/120
+    VAT10 = "vat10" # — НДС по ставке 10%
+    VAT20 = "vat20" # — НДС по ставке 20%
+    VAT105 = "vat105" # — НДС по расчетной ставке 5/105
+    VAT107 = "vat107" # — НДС по расчетной ставке 7/107
+    VAT110 = "vat110" # — НДС по расчетной ставке 10/110
+    VAT120 = "vat120" # — НДС по расчетной ставке 20/120
 
 
 def build_payment_data(title: str, description: str, price: float, order_number: str, vat: VatType = VatType.NONE) -> dict:
@@ -30,6 +30,8 @@ def build_payment_data(title: str, description: str, price: float, order_number:
 
     Если вы хотите работать с дробными ценами, убедитесь, что используете float корректно,
     или уберите (price * 100) из кода и передавайте сумму в копейках напрямую.
+
+    vat - тип НДС (VatType)
     """
     return {
         "TerminalKey": TINKOFF_TERMINAL_KEY,

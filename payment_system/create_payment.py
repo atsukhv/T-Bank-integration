@@ -28,12 +28,12 @@ async def create_payment(title: str, description: str, price: float, order_numbe
         logger.error(f"Ошибка создания платежа: {response_data}, статус={status_code}")
 
 
-async def main():
-    data = await create_payment(title="Заголовок платежа", description="Описание платежа", price=100.0, order_number="1244",
+async def test_create_payment():
+    data = await create_payment(title="Заголовок платежа", description="Описание платежа", price=100.0, order_number="1234567890",
     vat=VatType.NONE)
     print("Платеж создан")
     print(data)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(test_create_payment())
